@@ -127,6 +127,12 @@ shinyServer(function(input, output, session) {
     vars$chat <<- "Welcome to SilentChat!"
   })
   
+  # handle css 
+  output$selectCSS <- renderUI({
+    fileName = paste0("bootstrap_",input$css, ".css")
+    tags$head(tags$link(rel = "stylesheet", type = "text/css", href = fileName))
+  })
+  
   # Dynamically create the UI for the chat window.
   output$chat <- renderUI({
     if (length(vars$chat) > 500){

@@ -6,11 +6,12 @@ library(shiny)
 shinyUI(
   bootstrapPage(
     # We'll add some custom CSS styling -- totally optional
-    includeCSS("shinychat.css"),
-    
+    # includeCSS("css/bootstrap_Lumen.css"),  
+    uiOutput("selectCSS"),  
+     
     # And custom JavaScript -- just to send a message when a user hits "enter"
     # and automatically scroll the chat window for us. Totally optional.
-    includeScript("sendOnEnter.js"),
+    includeScript("sendOnEnter.js"), 
     
     div(
       # Setup custom Bootstrap elements here to define a new layout
@@ -26,15 +27,18 @@ shinyUI(
           ),
           
           # Text input for admin password
-          div( 
-              column(4, passwordInput("adminPassWord", "Admin Password: ", placeholder = "Do not even try :p")),
-              column(4, conditionalPanel(condition="input.adminPassWord=='yutongchuandatiancai'",
+          div(
+              column(3, passwordInput("adminPassWord", "Admin Password: ", placeholder = "Do not even try :p")),
+              column(3, conditionalPanel(condition="input.adminPassWord=='yutongchuandatiancai'",
                                          radioButtons("mode_selection", label="", choices=c("Silent Mode","Log Mode"), selected="Silent Mode", inline = TRUE),
                                          actionLink("clearChat", "Clear Chat", icon=icon("eraser"))
-              ))
+                     )),
+              column(2, selectInput("css", "Feeling Stylish?",
+                                    choices = c("Cerulean","Flaty","Journal","Litera","Pulse","Sketchy","United"), selected = "Sketchy")
+                     )
           ),
 
-          div(class="span6", id="play-nice", 
+          div(class="span4", id="play-nice", 
                  "IP Addresses are logged... be a decent human being."
           )
           
@@ -69,6 +73,7 @@ shinyUI(
           helpText(h5(a("Invite", href="mailto:someone@aig.com?subject= Join me on SlientChat&bcc=tongchuan.yu@aig.com&body=You are invited to join SilentChat. Please use this link http://10.64.20.23:7401/."), "friends to join SilentChat!")),
           # helpText(HTML("<p>Built using R & <a href = \"http://rstudio.com/shiny/\">Shiny</a>.<p>Source code available <a href =\"https://github.com/trestletech/ShinyChat\">on GitHub</a>."))
           helpText(h5("For maintenance, please contact the ", a("developer.", href="mailto:tongchuan.yu@aig.com?subject=SilentChat Maintenance")))
+          
         )
       )
     )
