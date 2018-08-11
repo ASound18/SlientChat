@@ -2,9 +2,11 @@ options(shiny.host="10.64.20.23")
 options(shiny.port=7401)
 
 library(shiny)
+library(shinyjs)
 
 shinyUI(
   bootstrapPage(
+    useShinyjs(),
     # We'll add some custom CSS styling -- totally optional
     # includeCSS("css/bootstrap_Lumen.css"),  
     uiOutput("selectCSS"),  
@@ -49,7 +51,7 @@ shinyUI(
         class = "row-fluid", 
         mainPanel(
           # Create a spot for a dynamic UI containing the chat contents.
-          fluidRow(uiOutput("chat")),
+          fluidRow(uiOutput("chat")),  
           
           # Create the bottom bar to allow users to chat.
           fluidRow(

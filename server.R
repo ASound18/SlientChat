@@ -3,6 +3,8 @@ options(shiny.port=7401)
 
 library(shiny)
 library(stringr)
+library(shinyjs)
+library(shinysky)
 
 # returns string w/o leading or trailing whitespace
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
@@ -37,7 +39,7 @@ shinyServer(function(input, output, session) {
   # When a session is ended, remove the user and note that they left the room. 
   session$onSessionEnded(function() {
     isolate({
-      vars$users <- vars$users[vars$users != sessionVars$username]
+      vars$users <- vars$users[vars$users != sessionVars$username] 
       vars$chat <- c(vars$chat, paste0(linePrefix(),
                                        tags$span(class="user-exit",
                                                  sessionVars$username,
@@ -97,7 +99,7 @@ shinyServer(function(input, output, session) {
   output$userList <- renderUI({
     tagList(tags$ul( lapply(vars$users, function(user){
       return(tags$li(user))
-    })))
+    }))) 
   })
   
   # Listen for input$send changes (i.e. when the button is clicked)
@@ -116,6 +118,15 @@ shinyServer(function(input, output, session) {
                                ),
                                ": ",
                                tagList(input$entry)))
+        if(grepl("tell me a secret", tolower(input$entry)) ) {
+          vars$chat <<- c(vars$chat, 
+                          paste0(linePrefix(),
+                                 tags$span(class="username",
+                                           tags$abbr(title=Sys.time(), "Admin")
+                                 ),
+                                 ": ",
+                                 tagList("Jacob got a girlfriend.")))
+        }
       }
     })
     # Clear out the text entry field.
